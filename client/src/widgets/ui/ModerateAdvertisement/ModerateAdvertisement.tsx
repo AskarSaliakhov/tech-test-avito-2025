@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { CustomButton as Button } from "../../../shared/ui/Button/Button.tsx";
 import { useApproveAdvertisement, useRejectAdvertisement, useRequestChangesAdvertisement } from "../../../store/api/advertisements/advertisementsApi.ts";
+import {useParams} from "react-router-dom";
 
 const REASONS = [
     "Запрещённый товар",
@@ -22,6 +23,8 @@ export function ModerationButtons() {
     const [modalType, setModalType] = useState<ModalType>(null);
     const [selectedReason, setSelectedReason] = useState<string | null>(null);
     const [comment, setComment] = useState("");
+
+    const { id } = useParams<{ id: string }>();
 
     const handleRejectClick = () => {
         setModalType('reject');
@@ -47,9 +50,9 @@ export function ModerationButtons() {
         }
     };
 
-    const mutationApprove = useApproveAdvertisement(99);
-    const mutationReject = useRejectAdvertisement(99);
-    const mutationRequestChanges = useRequestChangesAdvertisement(99);
+    const mutationApprove = useApproveAdvertisement(Number(id));
+    const mutationReject = useRejectAdvertisement(Number(id));
+    const mutationRequestChanges = useRequestChangesAdvertisement(Number(id));
 
     const handleSubmit = () => {
         let finalReason = selectedReason || "";

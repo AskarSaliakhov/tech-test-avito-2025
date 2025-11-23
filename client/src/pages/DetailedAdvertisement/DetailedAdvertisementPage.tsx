@@ -5,13 +5,16 @@ import { Loader } from "../../shared/ui/Loader/Loader.tsx";
 import { ModerationButtons } from "../../widgets/ui/ModerateAdvertisement/ModerateAdvertisement.tsx";
 import { ErrorCard } from "../../shared/ui/ErrorCard/ErrorCard.tsx";
 import { NavigationAdvertisements } from "../../widgets/ui/NavigationAdvertisements/NavigationAdvertisements.tsx";
+import { useParams } from "react-router-dom";
 
 export function DetailedAdvertisementPage() {
+    const { id } = useParams<{ id: string }>();
+
     const {
         data: oneAdvertisement,
         error: oneAdvertisementError,
         isLoading: isLoadingOneAdvertisement
-    } = useAdvertisement(99);
+    } = useAdvertisement(Number(id));
 
     if (isLoadingOneAdvertisement) return <Loader />;
     if (!isLoadingOneAdvertisement && oneAdvertisementError) return <ErrorCard />;
@@ -33,13 +36,9 @@ export function DetailedAdvertisementPage() {
                 seller={oneAdvertisement.seller}
                 moderationHistory={oneAdvertisement.moderationHistory}
             />
-            <Box
-                display="flex"
-                justifyContent="center"
-                mt={5}
-            >
+            <Box display="flex" justifyContent="center" mt={5}>
                 <ModerationButtons />
             </Box>
         </>
-    )
+    );
 }
