@@ -21,7 +21,7 @@ import { PhotoSlider } from "../../../shared/ui/PhotoSlider/PhotoSlider.tsx";
 import type { DetailedAdvertisementProps } from "./types";
 import { formatMoney } from "../../../shared/utils/formatMoney.ts";
 import { formatDateTime } from "../../../shared/utils/dates/dates.ts";
-import { STATUS, PRIORITY } from "./const.ts";
+import { STATUS, PRIORITY } from "../../../shared/consts/consts.ts";
 
 export function DetailedAdvertisement({
                                           photos,

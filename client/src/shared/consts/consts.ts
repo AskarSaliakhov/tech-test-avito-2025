@@ -2,7 +2,8 @@ export const STATUS = {
     'approved': 'Одобрено',
     'rejected': 'Отклонено',
     'requestChanges': 'Требуется доработки',
-    'draft': 'На рассмотрении'
+    'draft': 'На рассмотрении',
+    'pending': 'На ожидании',
 }
 
 export const PRIORITY = {

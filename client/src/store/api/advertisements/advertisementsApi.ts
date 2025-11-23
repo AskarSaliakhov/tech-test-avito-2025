@@ -2,11 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api.ts";
 
-export const useAdvertisements = () => {
+export const useAdvertisements = ({ page = 1, search = '', filters = [] }) => {
     return useQuery({
-        queryKey: ["advertisements"],
+        queryKey: ["advertisementsData", page, search, filters],
         queryFn: async () => {
-            const { data } = await api.get("/ads");
+            const { data } = await api.get("/ads", {
+                params: { page, search, filters },
+            });
             return data;
         },
     });

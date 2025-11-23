@@ -4,6 +4,10 @@ import { Category, AccessTime } from '@mui/icons-material';
 import { getPriorityIcon, getStatusIcon } from "./utils.tsx";
 import type { OneAdvertisementProps } from "./types.ts";
 
+import { formatMoney } from "../../utils/formatMoney.ts";
+import { formatDateTime } from "../../utils/dates/dates.ts";
+import { STATUS, PRIORITY } from "../../consts/consts.ts";
+
 export const OneAdvertisement = ({
                                      image,
                                      title,
@@ -40,7 +44,7 @@ export const OneAdvertisement = ({
                         {title}
                     </Typography>
                     <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom>
-                        {price}
+                        {formatMoney(price)}
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
@@ -60,14 +64,14 @@ export const OneAdvertisement = ({
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <AccessTime fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">
-                            {createdAt}
+                            {formatDateTime(createdAt)}
                         </Typography>
                     </Box>
 
                     <Box sx={{ display: 'flex', gap: 1 }}>
                         <Chip
                             icon={getStatusIcon(status)}
-                            label={status}
+                            label={STATUS[status]}
                             color={
                                 status === 'approved' ? 'success' : status === 'rejected' ? 'error' : 'warning'
                             }
@@ -75,7 +79,7 @@ export const OneAdvertisement = ({
                         />
                         <Chip
                             icon={getPriorityIcon(priority)}
-                            label={priority}
+                            label={PRIORITY[priority]}
                             color={priority === 'urgent' ? 'error' : 'primary'}
                             variant="outlined"
                             size="small"
