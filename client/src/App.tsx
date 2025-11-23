@@ -1,4 +1,4 @@
-import {AllAdvertisementsPage} from "./pages/AllAdvertisements/AllAdvertisementsPage.tsx";
+import {AllAdvertisementsPage } from "./pages/AllAdvertisements/AllAdvertisementsPage.tsx";
 
 
 export default function App() {
