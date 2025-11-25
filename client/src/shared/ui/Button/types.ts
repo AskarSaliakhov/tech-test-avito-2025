@@ -12,5 +12,5 @@ export interface ButtonProps {
     iconRight?: React.ReactNode;
     iconLeft?: React.ReactNode;
     disabled?: boolean;
-    onClick?: () => void;
+    onClick: () => void;
 }

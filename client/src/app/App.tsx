@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AllAdvertisementsPage } from "./pages/AllAdvertisements/AllAdvertisementsPage.tsx";
-import { DetailedAdvertisementPage } from "./pages/DetailedAdvertisement/DetailedAdvertisementPage.tsx";
-import { StatisticsPage } from "./pages/Statistics/StatisticsPage.tsx";
-import { Navbar } from "./widgets/ui/Navbar/Navbar.tsx";
+import { AllAdvertisementsPage } from "../pages/AllAdvertisements/AllAdvertisementsPage.tsx";
+import { DetailedAdvertisementPage } from "../pages/DetailedAdvertisement/DetailedAdvertisementPage.tsx";
+import { StatisticsPage } from "../pages/Statistics/StatisticsPage.tsx";
+import { Navbar } from "../widgets/ui/Navbar/Navbar.tsx";
 
 export default function App() {
     return (

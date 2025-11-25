@@ -89,6 +89,7 @@ export function DetailedAdvertisement({
                                 label={STATUS[status]}
                                 color={'approved'}
                             />
+
                             <Chip
                                 label={PRIORITY[priority]}
                                 color={priority === 'urgent' ? 'error' : 'primary'}

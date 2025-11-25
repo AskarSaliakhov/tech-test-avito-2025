@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { CustomButton as Button } from "../../../shared/ui/Button/Button.tsx";
 import { useApproveAdvertisement, useRejectAdvertisement, useRequestChangesAdvertisement } from "../../../store/api/advertisements/advertisementsApi.ts";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const REASONS = [
     "Запрещённый товар",
@@ -16,7 +16,7 @@ const REASONS = [
     "Другое",
 ];
 
-type ModalType = 'reject' | 'request-changes' | null;
+type ModalType = 'reject' | 'requestChanges' | null;
 
 export function ModerationButtons() {
     const [modalOpen, setModalOpen] = useState(false);
@@ -32,7 +32,7 @@ export function ModerationButtons() {
     };
 
     const handleRequestChangesClick = () => {
-        setModalType('request-changes');
+        setModalType('requestChanges');
         setModalOpen(true);
     };
 
@@ -77,7 +77,7 @@ export function ModerationButtons() {
 
         if (modalType === 'reject') {
             mutationReject.mutate(submitData);
-        } else if (modalType === 'request-changes') {
+        } else if (modalType === 'requestChanges') {
             mutationRequestChanges.mutate(submitData);
         }
 
@@ -93,7 +93,7 @@ export function ModerationButtons() {
                     buttonColor: "#f44336",
                     mutation: mutationReject
                 };
-            case 'request-changes':
+            case 'requestChanges':
                 return {
                     title: "Укажите причину возврата на доработку",
                     buttonText: "Вернуть на доработку",

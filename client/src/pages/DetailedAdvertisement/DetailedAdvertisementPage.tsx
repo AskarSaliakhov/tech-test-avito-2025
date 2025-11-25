@@ -5,10 +5,12 @@ import { Loader } from "../../shared/ui/Loader/Loader.tsx";
 import { ModerationButtons } from "../../widgets/ui/ModerateAdvertisement/ModerateAdvertisement.tsx";
 import { ErrorCard } from "../../shared/ui/ErrorCard/ErrorCard.tsx";
 import { NavigationAdvertisements } from "../../widgets/ui/NavigationAdvertisements/NavigationAdvertisements.tsx";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 export function DetailedAdvertisementPage() {
     const { id } = useParams<{ id: string }>();
+
+    const navigate = useNavigate();
 
     const {
         data: oneAdvertisement,
@@ -16,12 +18,16 @@ export function DetailedAdvertisementPage() {
         isLoading: isLoadingOneAdvertisement
     } = useAdvertisement(Number(id));
 
+    const backToAddAdvertisement = function () {
+        navigate("/ads")
+    }
+
     if (isLoadingOneAdvertisement) return <Loader />;
     if (!isLoadingOneAdvertisement && oneAdvertisementError) return <ErrorCard />;
 
     return (
         <>
-            <NavigationAdvertisements />
+            <NavigationAdvertisements onBackToList={backToAddAdvertisement}/>
             <DetailedAdvertisement
                 photos={oneAdvertisement.images}
                 title={oneAdvertisement.title}

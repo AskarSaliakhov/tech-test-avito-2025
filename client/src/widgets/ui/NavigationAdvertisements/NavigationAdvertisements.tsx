@@ -1,22 +1,14 @@
-import { Box, Stack } from "@mui/material";
-import { ArrowBack, ArrowForward, List } from "@mui/icons-material";
+import { Stack } from "@mui/material";
+import { List } from "@mui/icons-material";
 import { CustomButton} from "../../../shared/ui/Button/Button.tsx";
 
 interface NavigationAdvertisementsProps {
-    onBackToList?: () => void;
-    onPrevious?: () => void;
-    onNext?: () => void;
-    disablePrevious?: boolean;
-    disableNext?: boolean;
+    onBackToList: () => void;
 }
 
 export function NavigationAdvertisements(props: NavigationAdvertisementsProps) {
     const {
         onBackToList,
-        onPrevious,
-        onNext,
-        disablePrevious = false,
-        disableNext = false,
     } = props;
 
     return (
@@ -26,21 +18,6 @@ export function NavigationAdvertisements(props: NavigationAdvertisementsProps) {
                 iconLeft={<List />}
                 onClick={onBackToList}
             />
-
-            <Box sx={{ display: "flex", gap: 1 }}>
-                <CustomButton
-                    text="Предыдущее"
-                    iconLeft={<ArrowBack />}
-                    onClick={onPrevious}
-                    disabled={disablePrevious}
-                />
-                <CustomButton
-                    text="Следующее"
-                    iconRight={<ArrowForward />}
-                    onClick={onNext}
-                    disabled={disableNext}
-                />
-            </Box>
         </Stack>
     );
 }

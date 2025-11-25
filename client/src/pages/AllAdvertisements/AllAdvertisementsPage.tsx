@@ -1,4 +1,3 @@
-import React, { useState, useCallback, useEffect } from 'react';
 import {
     Box,
     Chip,
@@ -12,120 +11,47 @@ import {
     Typography,
     TextField,
     Paper
-} from '@mui/material';
+} from "@mui/material";
 
-import { useAdvertisements } from "../../store/api/advertisements/advertisementsApi.ts";
-import { Input } from "../../shared/ui/Input/Input.tsx";
-import { Loader } from "../../shared/ui/Loader/Loader.tsx";
-import { ErrorCard } from "../../shared/ui/ErrorCard/ErrorCard.tsx";
-import { useDebounce } from "../../shared/hooks/useDebounce.ts";
-import { AllAdvertisements } from "../../widgets/ui/AllAdvertisements/AllAdvertisements.tsx";
-import { CustomPagination } from "../../shared/ui/Pagination/Pagination.tsx";
+import { Input } from "../../shared/ui/Input/Input";
+import { Loader } from "../../shared/ui/Loader/Loader";
+import { ErrorCard } from "../../shared/ui/ErrorCard/ErrorCard";
+import { AllAdvertisements } from "../../widgets/ui/AllAdvertisements/AllAdvertisements";
+import { CustomPagination } from "../../shared/ui/Pagination/Pagination";
 
-import type { Status } from "../../shared/types/types.ts";
-import type { SortOrder, SortBy } from "./types.ts";
+import { STATUS } from "../../shared/consts/consts";
+import { SORT_OPTIONS, CATEGORIES, STATUSES } from "./consts";
+import { filterStyles } from "./styles";
 
-import { SORT_OPTIONS } from "./consts.ts";
-import { filterStyles } from "./styles.ts";
-
-const CATEGORIES = [
-    { id: 0, name: "Электроника" },
-    { id: 1, name: "Недвижимость" },
-    { id: 2, name: "Транспорт" },
-    { id: 3, name: "Работа" },
-    { id: 4, name: "Услуги" },
-    { id: 5, name: "Животные" },
-    { id: 6, name: "Мода" },
-    { id: 7, name: "Детское" },
-] as const;
-
-const STATUSES: Status[] = ['pending', 'approved', 'rejected', 'draft'];
+import { useAdvertisementsFilters } from "./hooks/useAdvertisementsFilters";
 
 export function AllAdvertisementsPage() {
-    const [search, setSearch] = useState('');
-    const [page, setPage] = useState(1);
-    const [selectedStatuses, setSelectedStatuses] = useState<Status[]>([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState<number | "">('');
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState('');
-    const [sortBy, setSortBy] = useState<SortBy>('createdAt');
-    const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
-
-    const debouncedSearch = useDebounce(search, 300);
-    const debouncedMinPrice = useDebounce(minPrice, 300);
-    const debouncedMaxPrice = useDebounce(maxPrice, 300);
-
-    const { data: advertisementsData, isError, isLoading } = useAdvertisements({
+    const {
+        search,
         page,
-        search: debouncedSearch,
-        minPrice: debouncedMinPrice,
-        maxPrice: debouncedMaxPrice,
-        status: selectedStatuses,
-        categoryId: selectedCategoryId === '' ? undefined : selectedCategoryId,
+        selectedStatuses,
+        selectedCategoryId,
+        minPrice,
+        maxPrice,
         sortBy,
         sortOrder,
-    });
-
-    const paginationData = advertisementsData?.pagination ?? {};
-    const totalPages = paginationData.totalPages ?? 1;
-    const totalItems = paginationData.totalItems ?? 0;
-
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }, [page]);
-
-    const handleSearchChange = useCallback((value: string) => {
-        setSearch(value);
-        setPage(1);
-    }, []);
-
-    const handleStatusChange = (event) => {
-        const value = event.target.value;
-        setSelectedStatuses(typeof value === 'string' ? value.split(',') : value);
-        setPage(1);
-    };
-
-    const handleCategoryChange = (event) => {
-        const value = event.target.value;
-        setSelectedCategoryId(value === '' ? '' : Number(value));
-        setPage(1);
-    };
-
-    const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value.replace(/\D/g, '');
-        setMinPrice(Number(value));
-        setPage(1);
-    };
-
-    const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value.replace(/\D/g, '');
-        setMaxPrice(value);
-        setPage(1);
-    };
-
-    const handleSortChange = (e) => {
-        const [by, order] = e.target.value.split('_');
-        setSortBy(by as SortBy);
-        setSortOrder(order as SortOrder);
-        setPage(1);
-    };
-
-    const handleResetFilters = () => {
-        setSelectedStatuses([]);
-        setSelectedCategoryId('');
-        setMinPrice(0);
-        setMaxPrice('');
-        setSearch('');
-        setSortBy('createdAt');
-        setSortOrder('desc');
-        setPage(1);
-    };
-
-    const ads = advertisementsData?.ads ?? [];
+        ads,
+        pagination,
+        isError,
+        isLoading,
+        setPage,
+        handleSearchChange,
+        handleStatusChange,
+        handleCategoryChange,
+        handleMinPriceChange,
+        handleMaxPriceChange,
+        handleSortChange,
+        handleResetFilters,
+    } = useAdvertisementsFilters();
 
     return (
         <Box sx={{ p: 2 }}>
-            <Box sx={{ mb: 3, width: '100%' }}>
+            <Box sx={{ mb: 3, width: "100%" }}>
                 <Input
                     value={search}
                     onChange={handleSearchChange}
@@ -136,12 +62,10 @@ export function AllAdvertisementsPage() {
                 />
             </Box>
 
-            <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>
+            <Box sx={{ display: "flex", gap: 3, alignItems: "flex-start" }}>
                 <Paper sx={filterStyles.paper}>
                     <Stack spacing={3}>
-                        <Typography variant="h6" gutterBottom>
-                            Фильтры
-                        </Typography>
+                        <Typography variant="h6">Фильтры</Typography>
 
                         <FormControl fullWidth size="small" sx={filterStyles.formControl}>
                             <InputLabel>Статус</InputLabel>
@@ -153,7 +77,12 @@ export function AllAdvertisementsPage() {
                                 renderValue={(selected) => (
                                     <Box sx={filterStyles.chipsContainer}>
                                         {selected.map((value) => (
-                                            <Chip key={value} label={value} size="small" sx={filterStyles.chip} />
+                                            <Chip
+                                                key={STATUS[value]}
+                                                label={STATUS[value]}
+                                                size="small"
+                                                sx={filterStyles.chip}
+                                            />
                                         ))}
                                     </Box>
                                 )}
@@ -161,7 +90,7 @@ export function AllAdvertisementsPage() {
                             >
                                 {STATUSES.map((status) => (
                                     <MenuItem key={status} value={status}>
-                                        {status}
+                                        {STATUS[status]}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -239,7 +168,7 @@ export function AllAdvertisementsPage() {
 
                             <Box sx={{ mt: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
                                 <CustomPagination
-                                    count={totalPages}
+                                    count={pagination.totalPages}
                                     page={page}
                                     onChange={(_, newPage) => setPage(newPage)}
                                     showFirstButton
@@ -247,7 +176,7 @@ export function AllAdvertisementsPage() {
                                 />
 
                                 <Typography sx={{ mt: 1, color: "text.secondary" }}>
-                                    Всего {totalItems} объявлений
+                                    Всего {pagination.totalItems} объявлений
                                 </Typography>
                             </Box>
                         </>
