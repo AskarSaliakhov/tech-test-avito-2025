@@ -2,7 +2,7 @@
 
 # Запуск проекта
 1. Склонировать репозиторий 
-- `git clone https://XXX` ( XXX - ссылка на репозиторий )
+- `git clone https://github.com/AskarSaliakhov/tech-test-avito-2025.git`
 2. Перейти в `tech-int3-server`
 - `cd tech-int3-server` # Перейти в бэкенд директорию   
 - `npm run install` #Установка зависимостей
